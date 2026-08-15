@@ -1,0 +1,40 @@
+CMAKE_MINIMUM_REQUIRED(3.12)
+PROJECT(TinyFractionsPP VERSION 0.2.0 LANGUAGES CXX)
+ADD_LIBRARY(TinyFractionsPP INTERFACE)
+TARGET_INCLUDE_DIRECTORIES(TinyFractionsPP INTERFACE
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<INSTALL_INTERFACE:include>
+)
+INSTALL(TARGETS TinyFractionsPP EXPORT TinyFractionsPPTargets INCLUDES DESTINATION include)
+INSTALL(DIRECTORY include/TinyFractionsPP DESTINATION include)
+INCLUDE(CMakePackageConfigHelpers)
+
+SET(PROJECT_CONFIG_IN "${CMAKE_CURRENT_SOURCE_DIR}/TinyFractionsPPConfig.cmake.in")
+SET(PROJECT_CONFIG_OUT "${CMAKE_CURRENT_BINARY_DIR}/TinyFractionsPPConfig.cmake")
+SET(VERSION_CONFIG_OUT "${CMAKE_CURRENT_BINARY_DIR}/TinyFractionsPPConfigVersion.cmake")
+
+WRITE_BASIC_PACKAGE_VERSION_FILE(
+        "${VERSION_CONFIG_OUT}"
+        VERSION ${PROJECT_VERSION}
+        COMPATIBILITY SameMajorVersion
+)
+
+CONFIGURE_PACKAGE_CONFIG_FILE(
+        "${PROJECT_CONFIG_IN}"
+        "${PROJECT_CONFIG_OUT}"
+        INSTALL_DESTINATION lib/cmake/TinyFractionsPP
+)
+
+install(
+        EXPORT TinyFractionsPPTargets
+        FILE TinyFractionsPPTargets.cmake
+        NAMESPACE TinyFractionsPP::
+        DESTINATION lib/cmake/TinyFractionsPP
+)
+
+INSTALL(
+        FILES
+        "${PROJECT_CONFIG_OUT}"
+        "${VERSION_CONFIG_OUT}"
+        DESTINATION lib/cmake/TinyFractionsPP
+)

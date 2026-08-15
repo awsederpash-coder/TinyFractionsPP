@@ -7,3 +7,4 @@
 #include "Config.h"
 #include "lib/CommonFraction.h"
 #include "lib/FractionMath.h"
+#include "lib/FractionOperators.h"

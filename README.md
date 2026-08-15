@@ -1,30 +1,38 @@
 # TinyFractionsPP
-C++ library allowing create fractions and perform calculations with them. Perfect for mathematicians and physicists.
+C++ library allowing to create fractions and perform calculations with them. Perfect for mathematicians and physicists.
 
 ## Description
-This light library made for easy work with common fractions. You can crate them from two integer, double and even two other fractions. Its possible to compare, sum, subtract, multiply, divide and raise to a power. Fractions are necessary for mathematicians and physicists to very accurate calculations, so they aren't convert to decimal every operation.
+This light library made for easy work with common fractions. You can crate them from two integer, double and even two other fractions. It's possible to compare, sum, subtract, multiply, divide and raise to a power. Fractions are necessary for mathematicians and physicists to very accurate calculations, so they aren't convert to decimal every operation.
 
 ## Install
 Clone this repository by https or ssh:
 ```bash
 git clone https://github.com/awsederpash-coder/TinyFractionsPP.git
 git clone git@github.com:awsederpash-coder/TinyFractionsPP.git
+сd TinyFractionsPP
 ```
-Move lib to any directory you like.
-Import:
-```C++
-#include "/path/to/lib/include/Core.h"
+Configure:
+```bash
+cmake -B build -DCMAKE_BUILD_TYPE=Release
 ```
-In CMakeLists.txt paste:
-```CMake
-add_library(tiny_fractions INTERFACE)
-target_include_directories(tiny_fractions INTERFACE /path/to/lib/)
-target_link_libraries(your_app_or_lib PRIVATE tiny_fractions)
+And build:
+```bash
+cmake --build build --target install
+```
+In CMakeLists.txt at your project insert:
+```cmake
+find_package(TinyFractionsPP 0.2 REQUIRED)
+add_executable(my_program main.cpp)
+target_link_libraries(my_program PRIVATE TinyFractionsPP::TinyFractionsPP)
+```
+Now it's easy to import my library from any source file:
+```c++
+#include <TinyFractions/Core.h>
 ```
 
 ## Usage
-All methods and classes are int namespace fr.
-Fractions class: fr::CommonFraction
+All methods and classes are int namespace *fr*.
+Fractions class: fr::CommonFraction.
 Constructors:
  - (int64,int64)
  - (int64)
@@ -33,21 +41,23 @@ Constructors:
  - (CommonFraction, CommonFraction)
 
 Methods:
- - print(string start, string end) -> void
- - getFull() -> pair(int64,int64)
- - getNumerator() -> int64
- - getDenominator() -> unsigned int64
- - getDecimal() -> double
+ - print(string start, string end) → void
+ - getFull() → pair(int64,int64)
+ - getNumerator() → int64
+ - getDenominator() → unsigned int64
+ - getDecimal() → double
 
 Functions:
- - fr::power(fr::CommonFraction, int) -> fr::CommomFraction
- - fr::bring(fr::CommonFraction, fr::CommonFraction) -> pair<CommonFraction,CommonFraction>
+ - fr::power(fr::CommonFraction, int) → fr::CommonFraction
+ - fr::bring(fr::CommonFraction, fr::CommonFraction) → pair<CommonFraction,CommonFraction>
 
 Operators:
  - \+
  - \-
  - \*
  - \/
+
+Comparison and arithmetic operators work between fractions as well as with *int* and *double*.
 
 ```C++
 using cfr = fr::CommonFraction;
