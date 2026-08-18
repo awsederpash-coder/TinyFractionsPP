@@ -5,6 +5,7 @@
 #pragma once
 
 #include "Config.h"
+#include "lib/Fwd.h"
 #include "lib/CommonFraction.h"
 #include "lib/FractionMath.h"
 #include "lib/FractionOperators.h"

@@ -14,78 +14,6 @@
 using int64 = long long;
 using uint64 = unsigned long long;
 
-class fr::CommonFraction {
-public:
-    // constructors
-    CommonFraction(int64, int64);
-    CommonFraction(int, int);
-    CommonFraction(int64);
-    CommonFraction(int);
-    CommonFraction(double);
-    CommonFraction(double,double);
-    CommonFraction(const CommonFraction &, const CommonFraction &);
-
-
-    // print
-    void print(std::string_view, std::string_view) const;
-
-
-    // get
-    [[nodiscard]] std::pair<int64,int64> getFull() const;
-    [[nodiscard]] double getDecimal() const;
-    [[nodiscard]] uint64 getNumerator() const;
-    [[nodiscard]] uint64 getDenominator() const;
-    [[nodiscard]] bool isPositive() const;
-    [[nodiscard]] bool isNegative() const;
-
-
-    // operators
-    constexpr bool operator==(const CommonFraction &) const noexcept;
-    constexpr bool operator==(int64) const noexcept;
-    bool operator==(double) const noexcept;
-
-    constexpr bool operator!=(const CommonFraction &) const noexcept;
-    constexpr bool operator!=(int64) const noexcept;
-    bool operator!=(double) const noexcept;
-
-    constexpr bool operator>(const CommonFraction &) const noexcept;
-    constexpr bool operator>(int64) const noexcept;
-    bool operator>(double) const noexcept;
-
-    constexpr bool operator<(const CommonFraction &) const noexcept;
-    constexpr bool operator<(int64) const noexcept;
-    bool operator<(double) const noexcept;
-
-    constexpr bool operator>=(const CommonFraction &) const noexcept;
-    constexpr bool operator>=(int64) const noexcept;
-    bool operator>=(double) const noexcept;
-
-    constexpr bool operator<=(const CommonFraction &) const noexcept;
-    constexpr bool operator<=(int64) const noexcept;
-    bool operator<=(double) const noexcept;
-
-    CommonFraction operator+(const CommonFraction &) const noexcept;
-    CommonFraction operator+(int64) const noexcept;
-    CommonFraction operator+(double) const noexcept;
-
-    CommonFraction operator-(const CommonFraction &) const noexcept;
-    CommonFraction operator-(int64) const noexcept;
-    CommonFraction operator-(double) const noexcept;
-
-    CommonFraction operator*(const CommonFraction &) const noexcept;
-    CommonFraction operator*(int64) const noexcept;
-    CommonFraction operator*(double) const noexcept;
-
-    CommonFraction operator/(const CommonFraction &) const noexcept;
-    CommonFraction operator/(int64) const noexcept;
-    CommonFraction operator/(double) const noexcept;
-
-private:
-    int64 m_num;
-    uint64 m_denom;
-    void _bring();
-};
-
 inline fr::CommonFraction::CommonFraction(int64 numerator, int64 denominator) {
     if (denominator == 0) throw std::runtime_error("denominator cannot be 0!");
     if (denominator < 0) {numerator = -numerator; denominator = -denominator;}
@@ -149,13 +77,12 @@ inline double fr::CommonFraction::getDecimal() const {
     return static_cast<double>(m_num)/static_cast<double>(m_denom);
 }
 
-
 constexpr bool fr::CommonFraction::operator==(const CommonFraction &other) const noexcept {
-    return m_num*other.m_denom == m_denom*other.m_num;
+    return m_num == other.m_num and m_denom == other.m_denom;
 }
 
 constexpr bool fr::CommonFraction::operator==(int64 x) const noexcept {
-    return *this == CommonFraction(x);
+    return m_num == x*m_denom;
 }
 
 inline bool fr::CommonFraction::operator==(double x) const noexcept {
@@ -163,11 +90,11 @@ inline bool fr::CommonFraction::operator==(double x) const noexcept {
 }
 
 constexpr bool fr::CommonFraction::operator!=(const CommonFraction &other) const noexcept {
-    return m_num*other.m_denom != m_denom*other.m_num;
+    return m_num != other.m_num or m_denom != other.m_denom;
 }
 
 constexpr bool fr::CommonFraction::operator!=(int64 x) const noexcept {
-    return *this != CommonFraction(x);
+    return m_num != x*m_denom;
 }
 
 inline bool fr::CommonFraction::operator!=(double x) const noexcept {
@@ -175,11 +102,11 @@ inline bool fr::CommonFraction::operator!=(double x) const noexcept {
 }
 
 constexpr bool fr::CommonFraction::operator>(const CommonFraction &other) const noexcept {
-    return m_num*other.m_denom > m_denom*other.m_num;
+    return static_cast<__int128>(m_num)*other.m_denom > static_cast<__int128>(m_denom)*other.m_num;
 }
 
 constexpr bool fr::CommonFraction::operator>(int64 x) const noexcept {
-    return *this > CommonFraction(x);
+    return m_num > x*m_denom;
 }
 
 inline bool fr::CommonFraction::operator>(double x) const noexcept {
@@ -187,11 +114,11 @@ inline bool fr::CommonFraction::operator>(double x) const noexcept {
 }
 
 constexpr bool fr::CommonFraction::operator<(const CommonFraction &other) const noexcept {
-    return m_num*other.m_denom < m_denom*other.m_num;
+    return static_cast<__int128>(m_num)*other.m_denom < static_cast<__int128>(m_denom)*other.m_num;
 }
 
 constexpr bool fr::CommonFraction::operator<(int64 x) const noexcept {
-    return *this < CommonFraction(x);
+    return m_num < x*m_denom;
 }
 
 inline bool fr::CommonFraction::operator<(double x) const noexcept {
@@ -199,11 +126,11 @@ inline bool fr::CommonFraction::operator<(double x) const noexcept {
 }
 
 constexpr bool fr::CommonFraction::operator>=(const CommonFraction &other) const noexcept {
-    return m_num*other.m_denom >= m_denom*other.m_num;
+    return static_cast<__int128>(m_num)*other.m_denom >= static_cast<__int128>(m_denom)*other.m_num;
 }
 
 constexpr bool fr::CommonFraction::operator>=(int64 x) const noexcept {
-    return *this >= CommonFraction(x);
+    return m_num >= x*m_denom;
 }
 
 inline bool fr::CommonFraction::operator>=(double x) const noexcept {
@@ -211,11 +138,11 @@ inline bool fr::CommonFraction::operator>=(double x) const noexcept {
 }
 
 constexpr bool fr::CommonFraction::operator<=(const CommonFraction &other) const noexcept {
-    return m_num*other.m_denom <= m_denom*other.m_num;
+    return static_cast<__int128>(m_num)*other.m_denom <= static_cast<__int128>(m_denom)*other.m_num;
 }
 
 constexpr bool fr::CommonFraction::operator<=(int64 x) const noexcept {
-    return *this <= CommonFraction(x);
+    return m_num <= x*m_denom;
 }
 
 inline bool fr::CommonFraction::operator<=(double x) const noexcept {
